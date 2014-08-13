@@ -1,2 +1,7 @@
 This branch contains all the source code of several python features.
-I'm using pydev in order to garantee that you will execute the python code in a correct manner. 
+I'm using pydev in order to garantee that you will execute the python code in a correct manner.
+
+In order to start run the tests you should execute:
+source configure.sh 
+
+Be carefull that you should run the configure.sh that is near to your folder (ex: /a/b/c/exec , run: source /a/b/configure.sh)
