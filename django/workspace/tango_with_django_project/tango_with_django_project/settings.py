@@ -1,5 +1,19 @@
-# Django settings for tango_with_django_project project.
+# Automatic solve the project directories (platform independent)
+import os
+SETTINGS_DIR = os.path.dirname(__file__)
 
+##Project Path
+PROJECT_PATH = os.path.join(SETTINGS_DIR, os.pardir)
+PROJECT_PATH = os.path.abspath(PROJECT_PATH)
+
+##Template Path
+TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
+
+##Static media folder path
+STATIC_PATH = os.path.join(PROJECT_PATH,'static')
+
+
+# Django settings for tango_with_django_project project.
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -72,6 +86,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    STATIC_PATH,
 )
 
 # List of finder classes that know how to find static files in
@@ -83,7 +98,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '^=mg8!x1prcwn%6x^yvdd$nt++aafne=%mtegfp14bin#tt)15'
+SECRET_KEY = '-zlm@-x!h8jipox2x4_5bahyy$)ghfoqp2cdv3mw!-@$2uv^v#'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -111,19 +126,21 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    TEMPLATE_PATH,
 )
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
+    #'django.contrib.auth',
+    #'django.contrib.contenttypes',
+    #'django.contrib.sessions',
+    #'django.contrib.sites',
+    #'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'rango',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
