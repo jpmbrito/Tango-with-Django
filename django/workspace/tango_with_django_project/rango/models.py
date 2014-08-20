@@ -7,6 +7,8 @@ class Category(models.Model):
 		verbose_name_plural = "Categories"
 	
 	name = models.CharField(max_length=128, unique=True)
+	views = models.IntegerField(default = 0)
+	likes = models.IntegerField(default = 0)
 
 	def __unicode__(self):
 		return self.name
@@ -14,7 +16,7 @@ class Category(models.Model):
 class Page(models.Model):
 	category = models.ForeignKey(Category)
 	title = models.CharField(max_length=128)
-	url = models.URLField()
+	url = models.URLField(unique=True)
 	views = models.IntegerField(default = 0)
 
 	def __unicode__(self):
