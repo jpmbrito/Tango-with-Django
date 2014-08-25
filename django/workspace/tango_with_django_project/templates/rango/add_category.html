@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html>
+	<head><title>Rango</title></head>
+
+	<body>
+		<h1>Add a category</h1>
+
+		<form id="category_form" method="post" 
+			action = "/rango/add_category/">
+
+			<h2> Hidden Fieds </h2>
+			{% csrf_token %}
+			{% for hidden in form.hidden_fields %}
+				{{ hidden }}
+			{% endfor %}
+
+			<h2> Visible Fields </h2>
+			{% for field in form.visible_fields %}
+				{{ field.errors }}
+				{{ field.help_text }}
+				{{ field }}
+			{% endfor %}
+
+			<input type = "submit" name = "submit"
+				value = "Create Category" />
+		</form>
+	</body>
+</html>
