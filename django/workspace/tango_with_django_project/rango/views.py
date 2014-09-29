@@ -46,7 +46,7 @@ def category(request, category_name_url):
 	category_name = category_name_url.replace('_', ' ')
 
 	#Create the Context Dictionary that will be passed for the template
-	context_dict = {'category_name' : category_name }
+	context_dict = {'category_name' : category_name , 'category_name_url' : category_name_url }
 
 	try:
 		#Get the category object
@@ -94,3 +94,39 @@ def add_category(request):
 			{'form':form},
 			context)
 
+from rango.forms import PageForm
+def add_page(request, category_name_url ):
+    context = RequestContext(request)
+    category_name = category_name_url.replace(' ', '_')
+    
+    if request.method == 'POST' :
+        print "POST"
+        form = PageForm(request.POST)
+        
+        if form.is_valid():
+            page = form.save(commit=False)
+            
+            try:
+                cat = Category.objects.get(name = category_name)
+                page.category = cat #Foreign Key
+                
+            except Category.DoesNotExist:
+                return render_to_response('rango/add_category.html',
+                        {},
+                        context)
+                        
+            page.views = 0
+            page.save()
+           
+            return category(request, category_name_url)
+        else:
+            print form.errors
+    
+    else:
+        form = PageForm()
+        
+    return render_to_response('rango/add_page.html',
+			{'form' : form, 
+            'category_name_url' : category_name_url,
+            'category_name' : category_name},
+			context)
