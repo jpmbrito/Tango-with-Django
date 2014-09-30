@@ -130,3 +130,48 @@ def add_page(request, category_name_url ):
             'category_name_url' : category_name_url,
             'category_name' : category_name},
 			context)
+
+from rango.forms import UserForm, UserProfileForm
+        
+def register(request):
+    context = RequestContext(request)
+    registered = False
+    
+    if request.method == 'POST' :
+        user_form = UserForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
+      
+        if user_form.is_valid() and profile_form.is_valid():
+            #Work in default django User
+            user = user_form.save() #Save user in database
+            
+            user.set_password(user.password) #Hash the password in DB
+            user.save()
+            
+            #Work in rango user
+            profile = profile_form.save(commit=False)
+            profile.user = user #Foreign key assignment
+            
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+            
+            profile.save()
+            
+            registered = True
+        else:
+            print user_form.errors, profile_form.errors
+            
+    else:
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+        
+    return render_to_response(
+        'rango/register.html',
+        {
+        'user_form' : user_form,
+        'profile_form' : profile_form,
+        'registered' : registered
+        },
+        context)
+            
+    
