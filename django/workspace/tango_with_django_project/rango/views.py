@@ -1,6 +1,7 @@
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 #Integration with the models
 from rango.models import Category
@@ -68,6 +69,7 @@ def category(request, category_name_url):
 
 
 from rango.forms import CategoryForm
+@login_required
 def add_category(request):
 	context = RequestContext(request)
 
@@ -95,6 +97,7 @@ def add_category(request):
 			context)
 
 from rango.forms import PageForm
+@login_required
 def add_page(request, category_name_url ):
     context = RequestContext(request)
     category_name = category_name_url.replace(' ', '_')
@@ -173,5 +176,42 @@ def register(request):
         'registered' : registered
         },
         context)
-            
+
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponseRedirect, HttpResponse
+def user_login(request):
+    context = RequestContext(request)
     
+    if request.method == 'POST':
+        #Gather the username and password from POST
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        #Try to authenticate with django auth application
+        user = authenticate(username=username, password=password)
+        
+        if user:
+            if user.is_active:
+                login(request,user)
+                return HttpResponseRedirect('/rango/')
+            else:
+                return HttpResponse("Your Rango Account is disabled")
+        else:
+            print "Invalid Login Details; {0} , {1}".format(username,password)
+            return HttpResponse("Invalid login details supplied.")
+    else:
+        #Present the login page
+        return render_to_response(
+            'rango/login.html',
+            {},
+            context)
+            
+@login_required
+def restricted(request):
+    return HttpResponse("Since you're logged in, you can see this text!")
+    
+from django.contrib.auth import logout
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect('/rango/')

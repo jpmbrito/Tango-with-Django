@@ -175,3 +175,6 @@ LOGGING = {
         },
     }
 }
+
+#Login URL for redirection
+LOGIN_URL = '/rango/login/'
