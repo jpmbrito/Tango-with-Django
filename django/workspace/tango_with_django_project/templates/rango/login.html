@@ -1,11 +1,9 @@
-<!DOCTYPE html>
+{% extends 'rango/base.html' %}
 
-<html>
+{% block title %} Login {% endblock %}
+{% block pageTitle %} Login {% endblock %}
 
-    <head><title>Rango</title></head>
-    
-    <body>
-        <h1>Login to Rango</h1>
+{% block body_block %}
         
         <form id="login_form" method="post" action="/rango/login/">
         
@@ -18,5 +16,4 @@
             
         </form>
         
-    </body>
-</html>
+{% endblock %}
