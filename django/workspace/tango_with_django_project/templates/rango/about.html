@@ -7,5 +7,7 @@
 
 {% block body_block %}
 		<strong>{{ aboutMessage }} </strong><br />
-		<img src="{% static "rango.jpg" %}" alt="Picture of Rango" />
+		<strong>Last Visit = {{ last_visit }}<br /> Number of visits = {{ visits }} </strong><br />
+        
+        <img src="{% static "rango.jpg" %}" alt="Picture of Rango" />
 {% endblock %}
