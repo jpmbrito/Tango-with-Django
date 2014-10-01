@@ -7,7 +7,7 @@ recurse() {
 	extension="${i##*.}"
 	if [ $extension == "py" ]; then
 		echo $i
-		python -m tabnanny $i
+		#python -m tabnanny $i
 		python -m py_compile $i
 	fi
     fi

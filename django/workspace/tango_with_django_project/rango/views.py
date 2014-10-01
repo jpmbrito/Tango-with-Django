@@ -6,9 +6,9 @@ from django.contrib.auth.decorators import login_required
 #Integration with the models
 from rango.models import Category
 from rango.models import Page
+from datetime import datetime
 
 # Create your views here.
-
 def index(request):
 	context = RequestContext(request)
 
@@ -18,14 +18,32 @@ def index(request):
 	for category in top_category_list:
 		category.url = category.name.replace(' ', '_')
 	
+    # Process the template
+	response =  render_to_response('rango/index.html', 
+            {
+            'categories' : top_category_list, 
+            'pages' : Page.objects.order_by('-views')[:5]
+            },
+            context)
 	
-	context_dict = {'categories' : top_category_list}
-
-	page_list = Page.objects.order_by('-views')[:5]
-	context_dict['pages'] = page_list
-
-	return render_to_response('rango/index.html', context_dict, context)
-
+	visits = int(request.COOKIES.get('visits', '0'))
+    
+    #Visits Cookie Processing
+	if 'last_visit' in request.COOKIES:
+        #Update the Cookie
+		last_visit = request.COOKIES['last_visit']
+		last_visit_time = datetime.strptime(last_visit[:-7], "%Y-%m-%d %H:%M:%S")
+        
+        #Check if it elapsed in seconds (to be more visible)
+		if (datetime.now() - last_visit_time ).seconds > 0:
+			response.set_cookie('visits', visits + 1 )
+			response.set_cookie('last_visit', datetime.now())
+	else:
+        #Create the Cookie
+		response.set_cookie('last_visit', datetime.now())
+        
+	return response
+    
 def about(request):
 	context = RequestContext(request)
 	
@@ -138,6 +156,7 @@ from rango.forms import UserForm, UserProfileForm
         
 def register(request):
     context = RequestContext(request)
+    
     registered = False
     
     if request.method == 'POST' :
