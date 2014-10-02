@@ -5,19 +5,49 @@
 
 {% block body_block %}
 
-    {% if registered %}
-        <strong> Thank You for registering!</strong>
-        <a href = "/rango/">Return to the homepage.</a><br />
+<div class="hero-unit">
+    <h1>Register with Django</h1>
+    <br />
+    
+    <div class="container">
+    
+    
+        {% if registered %}
         
-    {% else %}
+            <strong> Thank You for registering!</strong>
+            <p><a href="/rango/login/">Login</a> when you are ready to rango.</p>
         
-        <form id="user_form" method="post" action="/rango/register/" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ user_form.as_p }}
-            {{ profile_form.as_p }}
-            <input type="submit" name="submit" value="Register" />
-        </form>
+        {% else %}
         
-    {% endif %}
+            <form class="form-signin span8" id="user_form" method="post" action="/rango/register/" enctype="multipart/form-data">
+                
+                {% csrf_token %}
+                <h2 class="form-signin-heading">Sign up Here</h2>
+                
+                <!--User Form-->
+                {% for field in user_form.visible_fields %}
+                    {{ field.help_text }}
+                    {{ field }}
+                    {{ field.errors }} <br />
+                    {% endfor %}
+                    
+                <!--User Profile Form-->
+                {% for field in profile_form.visible_fields %}
+                    {{ field.help_text }}
+                    {{ field }}
+                    {{ field.errors }}<br />
+                    {% endfor %}
+                
+                <br />
+                
+                <input class="btn btn-primary" type="submit" name="submit" value="Register"/>
+                
+            </form>
+            
+        {% endif %}
+        
+    </div>
+    
+</div>
     
 {% endblock %}

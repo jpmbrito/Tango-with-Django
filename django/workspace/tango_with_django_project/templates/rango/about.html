@@ -6,8 +6,10 @@
 {% block pageTitle %} About {% endblock %}
 
 {% block body_block %}
+    
 		<strong>{{ aboutMessage }} </strong><br />
 		<strong>Last Visit = {{ last_visit }}<br /> Number of visits = {{ visits }} </strong><br />
         
         <img src="{% static "rango.jpg" %}" alt="Picture of Rango" />
+    </div>
 {% endblock %}
