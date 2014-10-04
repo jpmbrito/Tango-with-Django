@@ -22,7 +22,8 @@ def index(request):
     response =  render_to_response('rango/index.html', 
             {
             'categories' : top_category_list, 
-            'pages' : Page.objects.order_by('-views')[:5]
+            'pages' : Page.objects.order_by('-views')[:5],
+            'cat_list': get_category_list()
             },
             context)
     
@@ -55,7 +56,8 @@ def about(request):
             {
             'aboutMessage': 'This is the about message',
             'last_visit' : request.session['last_visit'],
-            'visits' :  request.session['visits']
+            'visits' :  request.session['visits'],
+            'cat_list': get_category_list()
             }, 
             context)
 
@@ -71,7 +73,11 @@ def category(request, category_name_url):
     category_name = category_name_url.replace('_', ' ')
 
     #Create the Context Dictionary that will be passed for the template
-    context_dict = {'category_name' : category_name , 'category_name_url' : category_name_url }
+    context_dict = {
+                'category_name' : category_name , 
+                'category_name_url' : category_name_url,
+                'cat_list': get_category_list()
+                }
 
     try:
         #Get the category object
@@ -88,6 +94,13 @@ def category(request, category_name_url):
 
     except Category.DoesNotExist:
         pass
+    
+    #Search Support
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+        if query:
+            result_list = run_query(query)
+            context_dict['result_list'] = result_list
     
     return render_to_response('rango/category.html', context_dict, context)
 
@@ -117,7 +130,10 @@ def add_category(request):
     #Bad Form (or form details)
     #Render the form with error messages
     return render_to_response('rango/add_category.html',
-            {'form':form},
+            {
+            'form':form,
+            'cat_list': get_category_list()
+            },
             context)
 
 from rango.forms import PageForm
@@ -155,7 +171,9 @@ def add_page(request, category_name_url ):
     return render_to_response('rango/add_page.html',
             {'form' : form, 
             'category_name_url' : category_name_url,
-            'category_name' : category_name},
+            'category_name' : category_name,
+            'cat_list': get_category_list()
+            },
             context)
 
 from rango.forms import UserForm, UserProfileForm
@@ -198,7 +216,8 @@ def register(request):
         {
         'user_form' : user_form,
         'profile_form' : profile_form,
-        'registered' : registered
+        'registered' : registered,
+        'cat_list': get_category_list()
         },
         context)
 
@@ -228,7 +247,9 @@ def user_login(request):
         #Present the login page
         return render_to_response(
             'rango/login.html',
-            {},
+            {
+            'cat_list': get_category_list()
+            },
             context)
             
 @login_required
@@ -240,3 +261,57 @@ from django.contrib.auth import logout
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/rango/')
+
+from rango.bing_search import run_query
+def search(request):
+    context = RequestContext(request)
+    result_list = []
+    
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+        
+        if query:
+            #Run the Bing function
+            result_list = run_query(query)
+        
+    return render_to_response(
+                'rango/search.html', 
+                {
+                'result_list': result_list,
+                'cat_list': get_category_list()
+                }, 
+                context)
+
+def get_category_list():
+    cat_list = Category.objects.all()
+    
+    for cat in cat_list:
+        cat.url = cat.name.replace(' ', '_')
+        
+    return cat_list
+    
+from django.contrib.auth.models import User
+from rango.models import UserProfile
+@login_required
+def profile(request):
+    context = RequestContext(request)
+    userObj = User.objects.get(username = request.user) #Get the User object
+    user_profile = None
+    
+    try:
+        user_profile = UserProfile.objects.get(user=userObj)
+        print user_profile
+    except:
+        print "User profile Not found..."
+        pass
+        
+    return render_to_response(
+                'rango/profile.html',
+                {
+                'cat_list' : get_category_list(),
+                'user' : userObj,
+                'user_profile' : user_profile
+                },
+                context
+                )
+    

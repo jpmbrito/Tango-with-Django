@@ -132,6 +132,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'django_extensions',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -178,3 +179,6 @@ LOGGING = {
 
 #Login URL for redirection
 LOGIN_URL = '/rango/login/'
+
+#Link a customized user to the django user
+AUTH_PROFILE_MODULE = 'rango.UserProfile'

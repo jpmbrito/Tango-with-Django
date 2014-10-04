@@ -14,3 +14,4 @@ easy_install pip
 #Install django
 pip install -U django==1.5.4
 pip install pillow
+pip install django-extensions
