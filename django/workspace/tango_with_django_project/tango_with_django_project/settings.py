@@ -180,5 +180,5 @@ LOGGING = {
 #Login URL for redirection
 LOGIN_URL = '/rango/login/'
 
-#Link a customized user to the django user
-AUTH_PROFILE_MODULE = 'rango.UserProfile'
+#Link a customized user to the django user (Not Needed)
+#AUTH_PROFILE_MODULE = 'rango.UserProfile'

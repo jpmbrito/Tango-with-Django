@@ -314,4 +314,25 @@ def profile(request):
                 },
                 context
                 )
+
+
+from django.shortcuts import redirect
+def track_url(request):
+    context = RequestContext(request)
+    page_id = None
+    url = '/rango/'
     
+    if request.method == 'GET':
+        if 'page_id' in request.GET:
+            page_id = request.GET['page_id']
+            
+            try:
+                #Increase the view number for a page
+                page = Page.objects.get(id=page_id)
+                page.views = page.views + 1
+                page.save()
+                url = page.url
+            except:
+                pass
+                
+    return redirect(url)
