@@ -71,12 +71,22 @@
                         <!-- Show a category list -->
                         {% block sidebar %}
                         {% endblock %}
-                        <div id="cats">
-                            {%if cat_list %}
-                                <ul class="nav nav-list"><li>Category List</li></ul>
+                        
+                        <!-- Category Search Left Bar -->
+                        <ul class="nav nav-list">
+                            <li class="nav-header">Find a Category</li>
+                            <form>
+                                <label></label>
+                                <li><input  class="search-query span10" type="text" name="suggestion" value="" id="suggestion" /></li>
+                            </form>
+                        </ul>
+                        
+                        {% if cat_list %}
+                            <div id="cats">
                                 {% include 'rango/category_list.html' with cat_list=cat_list %}
-                            {% endif %}
-                        </div>
+                            </div>
+                        {% endif %}
+                        
                     </div>
                     
                 </div>
@@ -105,9 +115,12 @@
         
         
         
-        <!-- Bootstrap-->
-        <script src="{% static 'js/jquery-2.0.3.min.js' %}"></script>
+        
+        <script src="{% static 'js/jquery.js' %}"></script>
+        <!-- BootStrap -->        
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <!-- Ajax -->
+        <script src="{% static 'js/rango-ajax.js' %}"></script
     </body>
     
 </html>
