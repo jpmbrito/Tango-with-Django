@@ -1,12 +1,11 @@
-<<<<<<< HEAD
-This project was developed by Joao Brito (joao.mano.brito@gmail.com).
-The main purpose of this project is only personal. The reason is that I need to organize all my learning curve.
-=======
-This branch contains all the source code of several python features.
-I'm using pydev in order to garantee that you will execute the python code in a correct manner.
+This repository contains the learning process proposed in www.tangowithdjango.com .
 
-In order to start run the tests you should execute:
-source configure.sh 
+This project has been developed using following requirements:
+- pyenv (https://github.com/yyuu/pyenv)
+- python 2.7.5
 
-Be carefull that you should run the configure.sh that is near to your folder (ex: /a/b/c/exec , run: source /a/b/configure.sh)
->>>>>>> development
+After you have all the requirements up and running, you should run the installation script available under django/config/install.sh .
+
+At this point you can launch the django website.
+
+If you have any doubt about this repository you can contact me through github.
